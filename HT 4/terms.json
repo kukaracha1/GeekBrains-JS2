@@ -1,0 +1,22 @@
+[
+  {
+    "term": "импрессионизм",
+    "data": "impressionism.json"
+  },
+  {
+    "term": "контроллер",
+    "data": "controller.json"
+  },
+  {
+    "term": "притча",
+    "data": "parable.json"
+  },
+  {
+    "term": "райдер",
+    "data": "raider.json"
+  },
+  {
+    "term": "вибрато",
+    "data": "vibrato.json"
+  }
+]
