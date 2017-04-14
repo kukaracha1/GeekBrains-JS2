@@ -5,14 +5,27 @@ body
     
 }
 
+span
+{
+    position:relative;
+}
+
 .hint
 {
     display:block;
     position:absolute;
     top:5;
     left:25;
-    /*width:200px;
-    height:100px;*/
+    width:300px;
+    /*height:100px;*/
     background:green;
     border:2px solid black;
+    color:white;
+    padding:5px;
 }
+.hint h3
+{
+    text-align:center;
+}
+
+

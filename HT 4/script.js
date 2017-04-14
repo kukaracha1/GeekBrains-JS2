@@ -4,12 +4,10 @@ function Hint(term)
 {	
 	var url;
 	terms.forEach(function(elem){
-		if (elem.term==term)
+		if (elem.term==term.innerText)
 			url = elem.data;
 	})
 	
-	var div = $('<div/>', {class: 'hint' }).css('top',window.event.clientY).css('left',window.event.clientX);
-	console.log(div);
 	$.ajax(
 		{
 			url: 'json/'+url,
@@ -19,9 +17,27 @@ function Hint(term)
 	)
 	.done( function(response){
 			// alert(response);
-			div[0].innerText = JSON.stringify(response);
 
-			$('body').append(div);
+	var div = $('<div/>', 
+	{
+		class: 'hint' 
+		// ,html : 
+		// 	((response.title)? $('<h/>' , {text : response.title}) : "") + 
+		// 	((response.description)? $('<p/>' , {text : response.description}) : "") + 
+		// 	((response.url)? $('<p/>' , {text : response.url}) : "") +
+		// 	((response.picture)? $('<img/>' , {src : response.picture}) : "")
+	
+	})
+	.append( ((response.title)? $('<h3/>' , {text : response.title}) : ""))
+	.append( ((response.description)? $('<p/>' , {text : response.description}) : "") )
+	.append( ((response.url)? $('<a/>' , {text: 'See more...' , href : response.url}) : "") )
+	.append( ((response.picture)? $('<img/>' , {src : response.picture , alt:'Picture could not be loaded'}) : "") )
+	.css('top',"15px")
+	.css('left',"-100px");
+
+	console.log(div);
+	
+			$(term).append(div);
 	})
 	.fail(function(){
 		alert('fail');
@@ -30,16 +46,16 @@ function Hint(term)
 
 function showHint()
 {
-	// this.css('color','red');
-	this.style.color = 'red';
-	Hint(this.innerText);
+	$(this).css('color','red');
+	// this.style.color = 'red';
+	Hint(this);
 	
 }
 
 function hideHint()
 {
-	// this.css('color','inherit');
-	this.style.color = 'yellow';	
+	$(this).css('color','yellow');
+	// this.style.color = 'yellow';	
 	$('.hint').remove();
 }
 	
@@ -61,7 +77,8 @@ function parseSpan(terms)
 	}, this);
 
 	$('span').hover(showHint,hideHint);
-	$('span').css('color','yellow');
+	$('span').css('color','yellow').css('text-decoration','dotted');
+
 }
 
 window.onload = function(){
@@ -85,7 +102,7 @@ window.onload = function(){
 				//console.log(terms);
 				parseSpan(terms);
 				
-			},)
+			})
 
 
 }
