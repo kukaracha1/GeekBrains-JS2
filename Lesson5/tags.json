@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "tag": "freeware"
+  },
+  {
+    "id": 2,
+    "tag": "trial"
+  },
+  {
+    "id": 3,
+    "tag": "stable"
+  },
+  {
+    "id": 4,
+    "tag": "source"
+  },
+  {
+    "id": 5,
+    "tag": "alpha"
+  },
+  {
+    "id": 6,
+    "tag": "beta"
+  },
+  {
+    "id": 7,
+    "tag": "desktop"
+  },
+  {
+    "id": 8,
+    "tag": "mobile"
+  },
+  {
+    "id": 9,
+    "tag": "fun"
+  }
+]

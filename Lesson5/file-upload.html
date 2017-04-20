@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <style>
+        body {
+            padding: 1em;
+        }
+        .tags-suggest .tag-suggest {
+            display: block;
+
+            margin-top: 5px;
+
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>Загрузка файлов</h1>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Теги</h2>
+        <form class="tags-search-form form-inline">
+            <input class="tags form-control"><button class="btn btn-success btn-add-tag">+</button>
+        </form><br/>
+        <div class="tags-suggest"></div>
+        <div class="tags-selected"></div>
+    </div>
+    <div class="col-md-8">
+        <h2>Файл</h2>
+        <input type="file"/>
+    </div>
+</div>
+
+<button class="btn btn-success">Загрузить</button>
+<script src="js/jquery-3.2.1.js"></script>
+<script>
+    $(function() {
+        var tags;
+
+        $.ajax({
+            url: 'tags.json',
+            method: 'POST',
+            dataType: 'json'
+        })
+        .done(function(responseTags) {
+            tags = responseTags;
+        });
+
+        $('.tags').keyup(function() {
+            var selectedTags = getSelectedTags();
+            $('.tags-suggest').empty();
+
+            var value = $(this).val(),
+                matchedTags = tags.filter(function(item) {
+                return (item.tag.indexOf(value) === 0) && selectedTags.indexOf(item.id) === -1;
+            });
+
+            $.each(matchedTags, function(index, item) {
+                $('.tags-suggest').append(
+                    $('<a/>', { class: 'tag-suggest', text: item.tag, 'data-id': item.id }).click(
+                        function(e) {
+                            var tagId = $(this).data('id');
+                            e.preventDefault();
+
+                            if (getSelectedTags().indexOf(tagId) === -1) {
+                                addTagToSelection(tagId, $(this).text());
+
+                                $(this).remove();
+                            }
+                        }
+                    )
+                );
+            });
+        });
+
+        function addTagToSelection(id, text) {
+            $('.tags-selected').append(
+                $('<button/>', {
+                    class: 'btn btn-default btn-small file-tag',
+                    text: ' ' + text,
+                    'data-id': id
+                }).prepend(
+                        $('<i/>', { class: 'fa fa-tag' })
+                ).click(function() {
+                    $(this).remove();
+                })
+            );
+        }
+
+        function getSelectedTags() {
+            var result = [];
+            $('.tags-selected .file-tag').each(function(index, item) {
+                result.push($(item).data('id'));
+            });
+
+            return result;
+        }
+
+        $('.tags-search-form').submit(function(e) {
+            e.preventDefault();
+            var tagsInput = $('.tags'),
+                plusButton = $('.btn-add-tag'),
+                tagTitle = tagsInput.val();
+
+            tagsInput.prop('disabled', 'disabled');
+            plusButton.prop('disabled', 'disabled');
+
+            $.ajax({
+                url: 'create-tag.php',
+                method: 'POST',
+                data: {
+                    tag: tagTitle
+                },
+                dataType: 'json'
+            }).done(function(response) {
+                var id = response.id;
+
+                addTagToSelection(id, tagTitle);
+                tags.push({
+                    id: id,
+                    tag: tagTitle
+                });
+
+                tagsInput.val('');
+            }).fail(function() {
+                alert('ошибка!');
+            }).always(function () {
+                tagsInput.prop('disabled', false);
+                plusButton.prop('disabled', false);
+            });
+        });
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+body
+{
+    background: gray;
+    color: white;
+    
+}
+
+.tag-suggest
+{
+    display:block;
+    cursor: pointer;
+}

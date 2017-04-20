@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "parent_id": null,
+    "title": "browsers"
+  },
+  {
+    "id": 2,
+    "parent_id": null,
+    "title": "editors"
+  },
+  {
+    "id": 3,
+    "parent_id": 2,
+    "title": "text editors"
+  },
+  {
+    "id": 4,
+    "parent_id": 2,
+    "title": "code editors"
+  },
+  {
+    "id": 5,
+    "parent_id": null,
+    "title": "antiviruses"
+  },
+  {
+    "id": 6,
+    "parent_id": null,
+    "title": "viewers"
+  },
+  {
+    "id": 7,
+    "parent_id": 6,
+    "title": "pdf viewers"
+  },
+  {
+    "id": 8,
+    "parent_id": 6,
+    "title": "picture viewers"
+  }
+]

@@ -8,6 +8,10 @@ function Hint(term)
 			url = elem.data;
 	})
 	
+	// url = terms.filter( function(item){
+	// 	return item.indexOf(term) === 0;
+	// });
+
 	$.ajax(
 		{
 			url: 'json/'+url,
@@ -16,28 +20,26 @@ function Hint(term)
 		}
 	)
 	.done( function(response){
-			// alert(response);
+				// alert(response);
 
-	var div = $('<div/>', 
-	{
-		class: 'hint' 
-		// ,html : 
-		// 	((response.title)? $('<h/>' , {text : response.title}) : "") + 
-		// 	((response.description)? $('<p/>' , {text : response.description}) : "") + 
-		// 	((response.url)? $('<p/>' , {text : response.url}) : "") +
-		// 	((response.picture)? $('<img/>' , {src : response.picture}) : "")
-	
-	})
-	.append( ((response.title)? $('<h3/>' , {text : response.title}) : ""))
-	.append( ((response.description)? $('<p/>' , {text : response.description}) : "") )
-	.append( ((response.url)? $('<a/>' , {text: 'See more...' , href : response.url}) : "") )
-	.append( ((response.picture)? $('<img/>' , {src : response.picture , alt:'Picture could not be loaded'}) : "") )
-	.css('top',"15px")
-	.css('left',"-100px");
+		var div = $('<div/>', 
+		{
+			class: 'hint' 
+			// ,html : 
+			// 	((response.title)? $('<h/>' , {text : response.title}) : "") + 
+			// 	((response.description)? $('<p/>' , {text : response.description}) : "") + 
+			// 	((response.url)? $('<p/>' , {text : response.url}) : "") +
+			// 	((response.picture)? $('<img/>' , {src : response.picture}) : "")
+		
+		})
+		.append( ((response.title)? $('<h3/>' , {text : response.title}) : ""))
+		.append( ((response.picture)? $('<img/>' , {src : response.picture , alt:'Picture could not be loaded'}) : "") )
+		.append( ((response.description)? $('<p/>' , {text : response.description}) : "") )
+		.append( ((response.url)? $('<a/>' , {text: 'See more...' , href : response.url}) : "") )
+		.css('top',"15px")
+		.css('left',"-100px");
 
-	console.log(div);
-	
-			$(term).append(div);
+		$(term).append(div);
 	})
 	.fail(function(){
 		alert('fail');
