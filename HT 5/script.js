@@ -6,17 +6,27 @@ function CategoryForm(parent_id=null, inherit = true)
 		form = $('<form/>' , {
 			class	:	"search-form"
 			}),
-		select = $('<select/>'),
+		select = $('<select/>' , {
+			class : 'col-md-offset-1'
+		}),
 		input = $('<input/>' , { 
 				class	:	"tags form-inline" ,
 				placeholder	:	"...or create new"
 			}),
 		button = $('<button/>' , {
 				class	:	"btn btn-success btn-add-tag",
-				text	:	'+'
+				text	:	'Create'
 			}),
 		child = $('<form/>' , {
 			class	:	"search-form"
+			}),
+		buttonAdd = $('<button/>' , {
+				class	:	"btn btn-success btn-create-tag",
+				text	:	'Add'
+			}),
+		paragraph = $('<h4/>' , { 
+			text : (parent_id==null)? 'Categories:' : 'Subcategories:',
+			class : 'col-md-offset-1'
 			}),
 		inherit = inherit;
 	var selected;
@@ -109,6 +119,53 @@ function CategoryForm(parent_id=null, inherit = true)
 		}
 	})
 
+	// take input value
+	function CreateTag( inputValue , callback)
+	{
+		var returnItem = {};
+		input.prop('disabled','disabled');
+		button.prop('disabled','disabled');
+
+		$.ajax({
+			url:	'php/create-tag.php',
+			method:	'POST',
+			dataType:	'json',
+			data:	
+				{
+					name: inputValue
+				}
+		})
+		.done(function(response) {
+			// console.log(response.id);
+			// console.log(inputValue);
+			// addToSelection(response.id, inputValue);
+
+			returnItem = {
+					"id": response.id,
+					"parent_id": parent_id,
+					"title": inputValue
+			};
+
+			tags.push(returnItem);
+			loadTags();
+			console.log(returnItem);
+			callback(returnItem.id , returnItem.title);	
+		})
+		.fail(function(status) {
+			// alert(status.text);
+			console.log()
+			console.log(status);
+			
+		})
+		.always(function() {
+			input.prop('disabled',false);
+			button.prop('disabled',false);
+			$(input).val(null);
+					
+		})
+	}
+
+
 	$(form).submit(function(e) {
 	// $('.btn btn-success btn-add-tag').click(function(e) {
 		e.preventDefault();
@@ -121,41 +178,31 @@ function CategoryForm(parent_id=null, inherit = true)
 			console.log(tagValue);
 		if (tagValue!="")
 		{
-			// create a new tag and add
-			input.prop('disabled','disabled');
-			button.prop('disabled','disabled');
+			CreateTag(tagValue);
+		}
+		else
+		{
+			// add tag from currents
 
-			$.ajax({
-				url:	'php/create-tag.php',
-				method:	'POST',
-				dataType:	'json',
-				data:	
-					{
-						name: tagValue
-					}
-			})
-			.done(function(response) {
-				// alert(response.id);
-				console.log(response.id);
-				console.log(tagValue);
-				addToSelection(response.id, tagValue);
-				tags.push({
-					    "id": response.id,
-						"parent_id": parent_id,
-						"title": tagValue
-				})
-				loadTags();
-			})
-			.fail(function(status) {
-				// alert(status.text);
-				console.log()
-				console.log(status);
-			})
-			.always(function() {
-				input.prop('disabled',false);
-				button.prop('disabled',false);
-				$(input).val(null)
-			})
+			// var selectedLine = $(select)[0].selectedIndex;
+			// var selectedElem = $(select)[0][selectedLine];
+			// var selectedId = $(selectedElem).data('id');
+
+			// addToSelection( selectedId , $(select).val() );
+		}
+	})
+
+	$(buttonAdd).click(function(e) {
+		e.preventDefault();
+		 
+		var tagValue = $(input).val();
+			console.log(tagValue);
+		if (tagValue!="")
+		{
+			var newItem = CreateTag(tagValue, addToSelection);
+			// console.log('create Tag');
+			// console.log(newItem);
+			// addToSelection(newItem.id, newItem.title);
 		}
 		else
 		{
@@ -168,6 +215,8 @@ function CategoryForm(parent_id=null, inherit = true)
 			addToSelection( selectedId , $(select).val() );
 		}
 	})
+
+	
 //////////////////////////////////////////////////////////////////
 	form.setSelected = function(div) {
 		selected = div;
@@ -175,7 +224,8 @@ function CategoryForm(parent_id=null, inherit = true)
 	
 //////////////////////////////////////////////////////////////////
 	loadTags();
-	form.append($(select)).append($(input)).append($(button)).append($(child));
+
+	form.append($(paragraph)).append($(select)).append($(input)).append($(button)).append($(buttonAdd)).append($(child));
 	return form;
 }
 
