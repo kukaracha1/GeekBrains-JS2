@@ -21,7 +21,7 @@ function CategoryForm(parent_id=null, inherit = true)
 			class	:	"search-form"
 			}),
 		buttonAdd = $('<button/>' , {
-				class	:	"btn btn-success btn-create-tag",
+				class	:	"btn btn-primary btn-create-tag",
 				text	:	'Add'
 			}),
 		paragraph = $('<h4/>' , { 
