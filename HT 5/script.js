@@ -120,7 +120,7 @@ function CategoryForm(parent_id=null, inherit = true)
 	})
 
 	// take input value
-	function CreateTag( inputValue , callback)
+	function CreateTag( inputValue , callback = null)
 	{
 		var returnItem = {};
 		input.prop('disabled','disabled');
@@ -149,7 +149,8 @@ function CategoryForm(parent_id=null, inherit = true)
 			tags.push(returnItem);
 			loadTags();
 			console.log(returnItem);
-			callback(returnItem.id , returnItem.title);	
+			if (callback!=null)
+				callback(returnItem.id , returnItem.title);	
 		})
 		.fail(function(status) {
 			// alert(status.text);
