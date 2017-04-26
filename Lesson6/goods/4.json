@@ -1,0 +1,44 @@
+[
+  {
+    "id": 41,
+    "title": "azaazzaazaz",
+    "price": 44,
+    "quantity": 15,
+    "sale": true
+  },
+  {
+    "id": 42,
+    "title": "авпавпавав",
+    "price": 77,
+    "quantity": 9,
+    "sale": false
+  },
+  {
+    "id": 43,
+    "title": "авыпавапвпваы",
+    "price": 37,
+    "quantity": 19,
+    "sale": false
+  },
+  {
+    "id": 44,
+    "title": "миссмиммсчмисч",
+    "price": 68,
+    "quantity": 29,
+    "sale": false
+  },
+  {
+    "id": 45,
+    "title": "авыавыывваыфваы",
+    "price": 30,
+    "quantity": 28,
+    "sale": true
+  },
+  {
+    "id": 46,
+    "title": "выаыавывыафваыффвыавфа",
+    "price": 42,
+    "quantity": 1,
+    "sale": false
+  }
+]

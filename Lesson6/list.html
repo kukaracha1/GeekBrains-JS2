@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+</head>
+<body>
+<div class="container-fluid goods">
+</div>
+<script src="js/jquery-3.2.1.js"></script>
+<script>
+$(function() {
+   var currentPage;
+
+   function showPage(page) {
+       currentPage = page;
+
+       $.ajax({
+           url: 'goods.php',
+           method: 'GET',
+           data: {
+               page: page
+           },
+           dataType: 'json',
+           cache: false
+       }).done(function(response) {
+           var goods = response.goods;
+           var totalPages = response.total_pages;
+
+           console.log(totalPages);
+
+           var goodsContainer = $('.goods');
+           goodsContainer.empty();
+
+           var goodsPage = $('<table/>', { class: 'table' });
+           $.each(goods, function(index, good) {
+               goodsPage.append(
+                   $('<tr/>', { 'data-id': good.id }).append(
+                       $('<td/>').append(
+                           $('<a/>',{ text: good.title, href: 'edit.html?id=' + good.id })
+                       )
+                   ).append(
+                       $('<td/>', {text: good.price})
+                   ).append(
+                       $('<td/>', {text: good.quantity})
+                   ).append(
+                       $('<td/>').append(
+                           $('<i/>', { class: 'fa ' +
+                               (good.sale ? 'fa-check' : 'fa-times')
+                           })
+                       )
+                   ).append(
+                       $('<td/>').append(
+                           $('<button/>', { class: 'btn btn-danger' }).append(
+                               $('<i/>', { class: 'fa fa-trash-o'})
+                           ).click(
+                               function () {
+                                   deleteGood($(this).closest('tr').data('id'));
+                               }
+                           )
+                       )
+                   )
+               );
+           });
+
+           goodsContainer.append(goodsPage);
+
+           var pager = $('<div/>');
+
+           for(var i = 0; i < totalPages; i++) {
+               var page = i + 1;
+               if (currentPage !== page) {
+                   pager.append(
+                       $('<button/>', { text: page, 'data-page': page }).click(
+                           function () {
+                               showPage($(this).data('page'));
+                           }
+                       )
+                   );
+               } else {
+                   pager.append(
+                       $('<label/>', { text: page })
+                   );
+               }
+
+           }
+
+           goodsContainer.append(pager);
+       })
+   }
+
+   function deleteGood(id) {
+       $.ajax({
+           url: 'delete.php',
+           method: 'GET',
+           data: {
+               id: id
+           },
+           dataType: 'json',
+           cache: false
+       }).done(function() {
+           $('tr[data-id="'+ id +'"]').remove();
+       })
+   }
+
+   showPage(1);
+
+});
+</script>
+</body>
+</html>

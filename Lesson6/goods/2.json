@@ -1,0 +1,44 @@
+[
+  {
+    "id": 21,
+    "title": "11111111",
+    "price": 44,
+    "quantity": 15,
+    "sale": true
+  },
+  {
+    "id": 22,
+    "title": "22222222",
+    "price": 77,
+    "quantity": 9,
+    "sale": false
+  },
+  {
+    "id": 23,
+    "title": "33333333",
+    "price": 37,
+    "quantity": 19,
+    "sale": false
+  },
+  {
+    "id": 24,
+    "title": "4444444444",
+    "price": 68,
+    "quantity": 29,
+    "sale": false
+  },
+  {
+    "id": 25,
+    "title": "555555555555",
+    "price": 30,
+    "quantity": 28,
+    "sale": true
+  },
+  {
+    "id": 26,
+    "title": "6666666666666",
+    "price": 42,
+    "quantity": 1,
+    "sale": false
+  }
+]

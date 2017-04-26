@@ -1,0 +1,47 @@
+{
+  "goods": [
+    {
+      "id": 1,
+      "title": "Намек тонкий",
+      "price": 44,
+      "quantity": 15,
+      "sale": true
+    },
+    {
+      "id": 2,
+      "title": "Троллинг толстый",
+      "price": 77,
+      "quantity": 9,
+      "sale": false
+    },
+    {
+      "id": 3,
+      "title": "Разочарования сплошные",
+      "price": 37,
+      "quantity": 19,
+      "sale": false
+    },
+    {
+      "id": 4,
+      "title": "Удача невероятная",
+      "price": 68,
+      "quantity": 29,
+      "sale": false
+    },
+    {
+      "id": 5,
+      "title": "Замки воздушные",
+      "price": 30,
+      "quantity": 28,
+      "sale": true
+    },
+    {
+      "id": 6,
+      "title": "Ответ универсальный",
+      "price": 42,
+      "quantity": 1,
+      "sale": false
+    }
+  ],
+  "total_pages": 5
+}

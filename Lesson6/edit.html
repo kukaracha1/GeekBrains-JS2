@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+</head>
+<body>
+
+<div class="container-fluid good">
+</div>
+<script src="js/jquery-3.2.1.js"></script>
+<script>
+$(function() {
+    var goodId = getQueryParam('id');
+
+    function getQueryParam(param) {
+        var search = document.location.search;
+        var values = search.slice(1).split('&').filter(
+            function(item) {
+                return item.split('=')[0] === param;
+            }
+        );
+
+        return values.pop().split('=').pop();
+    }
+
+    function showGood(goodId) {
+        $.ajax({
+            url: 'good.json',
+            method: 'GET',
+            data: {
+                id: goodId
+            },
+            dataType: 'json',
+            cache: false
+        }).done(function(good) {
+            var goodContainer = $('.good');
+            var goodForm = $('<form/>');
+
+            goodForm.append(
+                $('<h1/>', { text: good.title })
+            ).append(
+                $('<input/>', { name: 'title', value: good.title })
+            ).append(
+                $('<button/>', {
+                    class: 'btn btn-success',
+                    text: 'Сохранить',
+                    'data-id': good.id
+                }).click(
+                     function(e) {
+                         e.preventDefault();
+                         saveGood($(this).data('id'))
+                     }
+                )
+            );
+
+            goodContainer.append(goodForm);
+        })
+    }
+
+    function saveGood(id) {
+        var form = $('.good > form');
+        var data = form.serialize();
+        data = data + '&id=' + id;
+
+        console.log(data);
+
+        $.ajax({
+            url: 'edit.json',
+            method: 'GET',
+            data: data,
+            dataType: 'json',
+            cache: false
+        }).done(function() {
+            document.location.href = 'list.html';
+        })
+    }
+
+    showGood(goodId)
+
+});
+</script>
+</body>
+</html>

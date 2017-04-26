@@ -1,0 +1,10 @@
+
+.t-hover tr:hover
+{
+    background: #f5f5f5;
+}
+
+button
+{
+    margin: 5px;
+}

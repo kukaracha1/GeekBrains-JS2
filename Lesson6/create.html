@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+</head>
+<body>
+
+<div class="container-fluid good">
+</div>
+<script src="js/jquery-3.2.1.js"></script>
+<script>
+$(function() {
+    function showForm() {
+        var goodContainer = $('.good');
+        var goodForm = $('<form/>');
+
+        goodForm.append(
+            $('<h1/>', { text: 'Создание товара' })
+        ).append(
+            $('<input/>', { name: 'title', value: '' })
+        ).append(
+            $('<button/>', {
+                class: 'btn btn-success',
+                text: 'Создать'
+            }).click(
+                 function(e) {
+                     e.preventDefault();
+                     createGood();
+                 }
+            )
+        );
+
+        goodContainer.append(goodForm);
+
+    }
+
+    function createGood(id) {
+        var form = $('.good > form');
+        var data = form.serialize();
+
+        $.ajax({
+            url: 'create.json',
+            method: 'GET',
+            data: data,
+            dataType: 'json',
+            cache: false
+        }).done(function(good) {
+            document.location.href = 'view.html?id=' + good.id;
+        })
+    }
+
+    showGood(goodId)
+
+});
+</script>
+</body>
+</html>
