@@ -3,7 +3,7 @@
 function List()
 {
 	// private members
-	var data, url, 
+	var data, url, template 
 		form  = $('<form/>'),
 		table = $('<table/>' , {
 			class : 'table t-hover'
@@ -13,7 +13,7 @@ function List()
 			text	: '+'
 		}).click(function(e) {
 			e.preventDefault();
-			onCreate();
+			onCreate(url);
 		}),
 		wrapper = $('<div/>' , {
 			class	: 'col-md-offset-1',
@@ -56,11 +56,11 @@ function List()
 			var keys = Object.keys(item);
 			delete keys['id'];
 			$.each(keys, function(index , key){			
-				if (item[key] === true || item[key] === false)
+				if (item[key] === true || item[key] === false || item[key] === "true" || item[key] === "false")
 				// add icon
 					$(tableRow).append( $('<td/>')
 						.append( $('<i/>', { 
-							class: 'fa ' +((item[key] === true)? ' fa-check' : 'fa-times')
+							class: 'fa ' +((item[key] === true || item[key] === "true")? ' fa-check' : 'fa-times')
 							// ,
 							// value: ((item[key] === true)? true : false)
 						})
@@ -85,7 +85,7 @@ function List()
 	}
 
 	// get the list of data
-	function request()
+	function request(callback=null)
 	{
 		$.ajax( {
 			url			: url,
@@ -94,10 +94,25 @@ function List()
 		})
 		.done(function(response) {
 			console.log(response);		
-			data = response;
+			template = response[0];
+
+			data = [];
+
+			for (var index = 1; index < response.length; index++) {
+				data[index-1] = response[index];
+			}
+
+			// console.log('creating');
+			// console.log(data);
+			// console.log(template);
+			
 
 			// data gotted, fill the table
 			refreshTable();
+
+			if (callback!=null)
+				callback(template);
+
 			return data;
 		})
 		.fail(function(error) {
@@ -111,17 +126,18 @@ function List()
 		var newItem;		
 		// rewrite data
 		
-			var keys = Object.keys(item);
+		var keys = Object.keys(item);
 
-			$.each(keys, function(index , key){	
-				if (key!='id')		
-					if (item[key] === true || item[key] === false){
-						var val = ($('.'+key).prop('checked'));
-						item[key] =  (val === true || val === 'true')? true : false;
-					}
-					else
-						item[key] = $('.'+key + ' > input').val();
-					// console.log(item[key]);
+		$.each(keys, function(inde8x , key){	
+			if (key!='id')		
+				if (item[key] == true || item[key] == false || item[key] == "true" || item[key] == "false"){
+					var val = ($('.'+key).is(':checked'));
+					console.log(key + 'val is ' + val + '. condition:  '+(val === true || val === "true"));
+					item[key] =  (val === true || val === "true")? true : false;
+				}
+				else
+					item[key] = $('.'+key + ' > input').val();
+				// console.log(item[key]);
 		});
 
 		
@@ -188,10 +204,10 @@ function List()
 							text	:	key+": ",
 							class 	:	'col-md-1'
 						})));
-					if (response[key] === true || response[key] === false)		
+					if (response[key] === true || response[key] === false || response[key] === "true" || response[key] === "false")		
 						$(div).append($('<input/>',{
 							type 	:	'checkbox',
-							checked	:	response[key],
+							checked	:	( response[key] === true || response[key] === "true")? response[key] : false ,
 							class 	:	key			
 						}))
 					else
@@ -230,6 +246,93 @@ function List()
 		
 		
 	}
+
+
+	this.getCreateTable = function(id , callback=null) {
+		var body = {
+				url : url,
+			};
+
+			// empty form variable
+			$(form).empty();
+			form = $('<form/>');
+			request( tempAdd);
+			
+			function tempAdd(template) {
+
+				console.log('template');
+				console.log(template);
+				// create form based on template variable
+				var keys = Object.keys(template);
+				console.log(keys);
+
+				$.each(keys, function(index , key){	
+					if (key!='id'){
+						var div = $('<div/>' , { class 	:	key});
+						$(form).append($(div).append($('<span/>',{
+								text	:	key+": ",
+								class 	:	'col-md-1'
+							})));
+						if (template[key] === true || template[key] === false)		
+							$(div).append($('<input/>',{
+								type 	:	'checkbox',
+								// checked	:	response[key],
+								class 	:	key			
+							}))
+						else
+							$(div).append($('<input/>',{
+								// value	:	response[key],
+								class 	:	key
+							}));
+					}
+					});
+
+				// add control buttons
+				$(form).append($('<button/>' , {
+					text	:	'Save',
+					class	:	'btn btn-success'
+				}).click(function(e) {
+					e.preventDefault();
+					template.id = data.length+1;
+					body.item = template;
+
+					// add item in database
+					$.ajax({
+						url : 'change.php',
+						method: 'GET',
+						dataType: 'json',
+						data: body
+					})
+					.done(function(response) {
+
+						console.log('save');
+						console.log(response);
+						console.log('saveChanges()');
+						
+						saveChanges(form , template);
+					})
+					.fail(function(error) {
+						console.log(error);
+					})
+
+				}))
+				.append($('<button/>' , {
+					text	:	'Cancel',
+					class	:	'btn btn-danger'
+				}).click(function(e) {
+					e.preventDefault();
+					onIndex();
+				}))
+				
+				$('.list').append($(form));
+
+				
+
+			}
+		
+		
+	}
+
 
 	//  return this;
 }
