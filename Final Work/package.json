@@ -1,0 +1,19 @@
+{
+  "name": "library",
+  "version": "1.0.0",
+  "description": "Final course work \"Library\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "hermione",
+    "postinstall": "bower install"
+  },
+  "pre-commit": [
+    "test"
+  ],
+  "author": "MB",
+  "license": "ISC",
+  "dependencies": {
+    "hermione": "^0.34.0",
+    "pre-commit": "^1.2.2"
+  }
+}

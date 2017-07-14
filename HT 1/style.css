@@ -1,0 +1,12 @@
+body
+{
+    background: gray;
+    color: white;
+    font-size:24px;
+}
+
+p
+{
+    float:left;
+    margin-right:10px;
+}

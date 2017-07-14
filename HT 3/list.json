@@ -1,0 +1,27 @@
+[
+    {
+        "name":"bread",
+        "amount":5,
+        "checked":false
+    },
+    {
+        "name":"milk",
+        "amount":3,
+        "checked":false
+    },
+    {
+        "name":"porridge",
+        "amount":1,
+        "checked":false
+    },
+    {
+        "name":"meat",
+        "amount":3,
+        "checked":false
+    },
+    {
+        "name":"water",
+        "amount":7,
+        "checked":false
+    }
+]
